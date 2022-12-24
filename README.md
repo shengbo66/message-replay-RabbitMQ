@@ -22,14 +22,14 @@ The message will be deleted from cc_que1 after consumed. If there is something w
 
 ## Setup Env
 
-### Exchange & Queues setup
+### Exchange & Queues setup in RabbitMQ
 
 
 [Image: Image.jpg]
 
 [Image: Image.jpg]
 [Image: Image.jpg][Image: Image.jpg]
-### Shovel config
+### Shovel config in RabbitMQ
 
 go to “Admin” → “Shovel Management”
 [Image: Image.jpg]add a new shovel
@@ -37,8 +37,35 @@ go to “Admin” → “Shovel Management”
 
 [Image: Image.jpg]
 
+### Lambda setting for message replay
+
+Parameters description for [messagereply.lambda.py](https://github.com/shengbo66/message-replay-RabbitMQ/blob/main/messagereply.lambda.py)
+
+|Key	|Value	|Description	|
+|---	|---	|---	|
+|BrokerArn	|arn:aws:mq:us-east-1:48xxxxx1127:broker:MsgReplay:b-a6dee68d-c03a-41f7-948d-e1af60cf9e65	|The Arn for the rabbitMQ broker	|
+|---	|---	|---	|
+|SecretManagerArn	|arn:aws:secretsmanager:us-east-1:48xxxxxx1127:secret:rabbitmq-WYC14r	|the secrets arn which store the credential for rabbitMQ accessing	|
+|msgNofiler	|1671029198	|the massgeNo greater than this filter will be replayed	|
+|queue_name	|replay	|the target queue name	|
+|replayMaxNo	|10	|the maximum number of message replayed	|
+
+This lambda relies on pika , you can upload the [pika.zip](https://github.com/shengbo66/message-replay-RabbitMQ/blob/main/pika.zip) in the layers.
+
 
 ### Testing
+
+You can use the **msgGenerate4rabbitmq_python_lambda.py** to produce the message
+it is also a lambda function
+the parameters are 
+
+|Key	|Value	|Description	|
+|---	|---	|---	|
+|BrokerArn	|arn:aws:mq:us-east-1:48xxxxxx1127:broker:MsgReplay:b-a6dee68d-c03a-41f7-948d-e1af60cf9e65	|The Arn for the rabbitMQ broker	|
+|---	|---	|---	|
+|SecretManagerArn	|arn:aws:secretsmanager:us-east-1:48xxxxxx1127:secret:rabbitmq-WYC14r	|the secrets arn which store the credential for rabbitMQ accessing	|
+|msgNo	|1000	|the number of message to be produced	|
+
 
 produce 1000 msg, message_id start from 1671028898
 [Image: Image.jpg]consume the message in cc_queue1 (production queue)
