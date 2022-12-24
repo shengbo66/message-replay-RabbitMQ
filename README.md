@@ -14,7 +14,9 @@ Key features
 
 ## Solution Design
 
-![Solution Design](./pic/Solution%20design.jpg)
+![Solution Design](./pic/Solution%20design.jpg)Solution design graph
+
+
 Use the fan-out exchange to copy(route) the same message to cc_que1 and bak_cc_que1. The fan-out exchange will keep the messages are delivered to both two queues.
 Setup the shovel plugin between source queue: bak_cc_que1 and the target:Operation (fan_out exchange). the message will be automatically sync between bak_cc_que1 and Replay(queue)
 The message will be deleted from cc_que1 after consumed. If there is something wrong happened in the consuming micro-service. you can replay the message from replay queue. start the message replay lambda , it will consume the message in from the replay queue. The messages which match the filters will be tagged and put to the pd exchange again. The consuming micro-service can process the replay message without any code logic change. 
@@ -25,18 +27,20 @@ The message will be deleted from cc_que1 after consumed. If there is something w
 ### Exchange & Queues setup in RabbitMQ
 
 
-[Image: Image.jpg]
+![queues created](./pic/queues.jpg)queues created in this PoC
 
-[Image: Image.jpg]
-[Image: Image.jpg][Image: Image.jpg]
+![exchange created](./pic/exchange.jpg)exchange created in this PoC
+![binding ex pd](./pic/binding-ex-pd.jpg)the binding for Exchange pd
+![biding ex ops](./pic/binding-ex-ops.jpg)the binding for Exchange ops
+
 ### Shovel config in RabbitMQ
 
 go to “Admin” → “Shovel Management”
-[Image: Image.jpg]add a new shovel
+[Image: Image.jpg]Shovel Management panel
 
+add a new shovel
 
 [Image: Image.jpg]
-
 ### Lambda setting for message replay
 
 Parameters description for [messagereply.lambda.py](https://github.com/shengbo66/message-replay-RabbitMQ/blob/main/messagereply.lambda.py)
