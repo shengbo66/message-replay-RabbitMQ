@@ -14,7 +14,7 @@ Key features
 
 ## Solution Design
 
-[Image: Image.jpg]
+[Image: https://github.com/shengbo66/message-replay-RabbitMQ/blob/main/pic/Solution%20design.jpg]
 Use the fan-out exchange to copy(route) the same message to cc_que1 and bak_cc_que1. The fan-out exchange will keep the messages are delivered to both two queues.
 Setup the shovel plugin between source queue: bak_cc_que1 and the target:Operation (fan_out exchange). the message will be automatically sync between bak_cc_que1 and Replay(queue)
 The message will be deleted from cc_que1 after consumed. If there is something wrong happened in the consuming micro-service. you can replay the message from replay queue. start the message replay lambda , it will consume the message in from the replay queue. The messages which match the filters will be tagged and put to the pd exchange again. The consuming micro-service can process the replay message without any code logic change. 
