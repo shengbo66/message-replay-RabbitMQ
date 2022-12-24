@@ -14,7 +14,8 @@ Key features
 
 ## Solution Design
 
-![Solution Design](./pic/Solution%20design.jpg)Solution design graph
+![Solution Design](./pic/Solution%20design.jpg)
+Solution design graph
 
 
 Use the fan-out exchange to copy(route) the same message to cc_que1 and bak_cc_que1. The fan-out exchange will keep the messages are delivered to both two queues.
@@ -27,20 +28,28 @@ The message will be deleted from cc_que1 after consumed. If there is something w
 ### Exchange & Queues setup in RabbitMQ
 
 
-![queues created](./pic/queues.jpg)queues created in this PoC
+![queues created](./pic/queues.jpg)
+queues created in this PoC
 
-![exchange created](./pic/exchange.jpg)exchange created in this PoC
-![binding ex pd](./pic/binding-ex-pd.jpg)the binding for Exchange pd
-![biding ex ops](./pic/binding-ex-ops.jpg)the binding for Exchange ops
+![exchange created](./pic/exchange.jpg)
+exchange created in this PoC
+
+![binding ex pd](./pic/binding-ex-pd.jpg)
+the binding for Exchange pd
+
+![biding ex ops](./pic/binding-ex-ops.jpg)
+the binding for Exchange ops
 
 ### Shovel config in RabbitMQ
 
 go to “Admin” → “Shovel Management”
-[Image: Image.jpg]Shovel Management panel
+![Shovel panel](./pic/Shovel-Panel.jpg)
+Shovel Management panel
 
 add a new shovel
 
-[Image: Image.jpg]
+![Shovel config](./pic/Shovel-config.jpg)
+
 ### Lambda setting for message replay
 
 Parameters description for [messagereply.lambda.py](https://github.com/shengbo66/message-replay-RabbitMQ/blob/main/messagereply.lambda.py)
@@ -72,6 +81,10 @@ the parameters are
 
 
 produce 1000 msg, message_id start from 1671028898
-[Image: Image.jpg]consume the message in cc_queue1 (production queue)
-[Image: Image.jpg]replay message_id from 1671029198, there should be 700 message within the scope. but we set replayMaxNo : 500;  it means only first 500 messages will be replayed.
+![test 1](./pic/test1.jpg)
+consume the message in cc_queue1 (production queue)
+
+![test 2](./pic/test2.jpg)
+
+replay message_id from 1671029198, there should be 700 message within the scope. but we set replayMaxNo : 500;  it means only first 500 messages will be replayed.
 
